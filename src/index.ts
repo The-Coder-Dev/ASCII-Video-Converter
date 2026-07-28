@@ -1,16 +1,11 @@
-import { extractFrames } from "./extractFrames.js";
+import { imageToAscii } from "./converters/imageToAscii.js";
 
 async function main() {
-  try {
-    console.log("🚀 ASCII Video Converter");
+  const ascii = await imageToAscii(
+    "frames/frame-0001.png"
+  );
 
-    await extractFrames();
-
-    console.log("🎉 Pipeline completed.");
-  } catch (error) {
-    console.error("❌ Something went wrong:");
-    console.error(error);
-  }
+  console.log(ascii);
 }
 
 main();
