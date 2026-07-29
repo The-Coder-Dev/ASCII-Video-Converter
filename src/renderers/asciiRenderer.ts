@@ -1,27 +1,39 @@
 import { createCanvas } from "canvas";
 import fs from "node:fs";
 import type { RendererOptions } from "../types/renderer.js";
+import { renderConfig } from "../config/renderConfig.js";
 
 export async function renderAscii({ ascii, outputPath }: RendererOptions) {
-  const canvas = createCanvas(1200, 1200);
+  // Split ASCII into lines FIRST
+  const lines = ascii.split("\n");
+
+  // Now we know rows and columns
+  const rows = lines.length;
+  const columns = lines[0]?.length ?? 0;
+
+  // Calculate canvas size
+  const width = columns * renderConfig.charWidth + renderConfig.paddingX * 2;
+
+  const height = rows * renderConfig.lineHeight + renderConfig.paddingY * 2;
+
+  // Create canvas
+  const canvas = createCanvas(width, height);
 
   const ctx = canvas.getContext("2d");
 
   // Background
-  ctx.fillStyle = "#000";
+  ctx.fillStyle = renderConfig.background;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Text
-  ctx.font = "16px monospace";
-  ctx.fillStyle = "#FFFFFF";
+  // Draw text
+  ctx.font = `${renderConfig.fontSize}px ${renderConfig.fontFamily}`;
+  ctx.fillStyle = renderConfig.foreground;
 
-  const lines = ascii.split("\n");
-
-  let y = 50;
+  let y = renderConfig.paddingY;
   for (const line of lines) {
-    ctx.fillText(line, 20, y);
+    ctx.fillText(line, renderConfig.paddingX, y);
 
-    y += 18;
+    y += renderConfig.lineHeight;
   }
 
   console.log(lines.length);
