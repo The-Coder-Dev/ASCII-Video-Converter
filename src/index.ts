@@ -1,18 +1,27 @@
 import { imageToAscii } from "./converters/imageToAscii.js";
 import { renderAscii } from "./renderers/asciiRenderer.js";
-import "./fonts/registerFonts.js";
+import { getFrames } from "./utils/getFrames.js";
+import path from "node:path";
 
 async function main() {
-  const ascii = await imageToAscii(
-    "frames/frame-0001.png"
-  );
+  const frames = await getFrames();
 
-  await renderAscii({
-    ascii,
-    outputPath: "output/frame-0001.png",
-  });
+  console.log(`Found ${frames.length} frames`);
 
-  console.log("Done!");
+  for (const frame of frames) {
+    const ascii = await imageToAscii(frame);
+
+    const filename = path.basename(frame);
+
+    await renderAscii({
+      ascii,
+      outputPath: `output/${filename}`,
+    });
+
+    console.log(`✓ ${filename}`);
+  }
+
+  console.log("🎉 All frames rendered");
 }
 
 main();

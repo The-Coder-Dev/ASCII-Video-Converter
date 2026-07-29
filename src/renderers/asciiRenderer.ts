@@ -1,7 +1,9 @@
-import { createCanvas } from "canvas";
+import { createCanvas } from "@napi-rs/canvas";
 import fs from "node:fs";
+import path from "node:path";
 import type { RendererOptions } from "../types/renderer.js";
 import { renderConfig } from "../config/renderConfig.js";
+import "../fonts/registerFonts.js";
 
 export async function renderAscii({ ascii, outputPath }: RendererOptions) {
   // Split ASCII into lines
@@ -56,8 +58,15 @@ export async function renderAscii({ ascii, outputPath }: RendererOptions) {
     y += renderConfig.lineHeight;
   }
 
+  // Ensure output directory exists
+  const dir = path.dirname(outputPath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
   // Save image
   fs.writeFileSync(outputPath, canvas.toBuffer("image/png"));
 
   console.log(`✅ PNG created: ${outputPath}`);
 }
+

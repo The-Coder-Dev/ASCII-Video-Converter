@@ -1,8 +1,8 @@
-import { registerFont } from "canvas";
+import { GlobalFonts } from "@napi-rs/canvas";
+import path from "node:path";
+import fs from "node:fs";
 
-registerFont(
-  "assets/fonts/JetBrainsMono-Regular.ttf",
-  {
-    family: "JetBrains Mono",
-  }
-);
+const fontPath = path.resolve(process.cwd(), "assets/fonts/JetBrainsMono-Regular.ttf");
+if (fs.existsSync(fontPath)) {
+  GlobalFonts.registerFromPath(fontPath, "JetBrains Mono");
+}
