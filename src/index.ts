@@ -1,5 +1,6 @@
 import { imageToAscii } from "./converters/imageToAscii.js";
 import { renderAscii } from "./renderers/asciiRenderer.js";
+import "./fonts/registerFonts.js";
 
 async function main() {
   const ascii = await imageToAscii(
