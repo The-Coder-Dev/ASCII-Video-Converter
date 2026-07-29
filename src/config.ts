@@ -15,7 +15,7 @@ export const config = {
 
   background: "#000000",
 
-  charset: " .·°○◌●@",
+  charset: "dots",
 };
 
 export default config;
