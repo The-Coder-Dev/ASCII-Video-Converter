@@ -3,7 +3,7 @@ import sharp from "sharp";
 export async function imageToAscii(imagePath: string) {
   // Resize image to make ASCII manageable
   const image = sharp(imagePath).resize({
-    width: 100,
+    width: 120,
   });
 
   // Get raw pixel data
@@ -24,14 +24,9 @@ export async function imageToAscii(imagePath: string) {
       const g = data[index + 1];
       const b = data[index + 2];
 
-      const brightness =
-        0.299 * r +
-        0.587 * g +
-        0.114 * b;
+      const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
 
-      const charIndex = Math.floor(
-        (brightness / 255) * (chars.length - 1)
-      );
+      const charIndex = Math.floor((brightness / 255) * (chars.length - 1));
 
       ascii += chars[charIndex];
     }

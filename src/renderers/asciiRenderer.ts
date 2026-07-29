@@ -3,10 +3,7 @@ import fs from "node:fs";
 import type { RendererOptions } from "../types/renderer.js";
 import { renderConfig } from "../config/renderConfig.js";
 
-export async function renderAscii({
-  ascii,
-  outputPath,
-}: RendererOptions) {
+export async function renderAscii({ ascii, outputPath }: RendererOptions) {
   // Split ASCII into lines
   const lines = ascii.split("\n");
 
@@ -24,11 +21,11 @@ export async function renderAscii({
   const charWidth = metrics.width;
 
   // Calculate canvas size
-  const width =
-    Math.ceil(columns * charWidth + renderConfig.paddingX * 2);
+  const width = Math.ceil(columns * charWidth + renderConfig.paddingX * 2);
 
-  const height =
-    Math.ceil(rows * renderConfig.lineHeight + renderConfig.paddingY * 2);
+  const height = Math.ceil(
+    rows * renderConfig.lineHeight + renderConfig.paddingY * 2,
+  );
 
   // Create the actual canvas
   const canvas = createCanvas(width, height);
@@ -38,6 +35,9 @@ export async function renderAscii({
   ctx.fillStyle = renderConfig.background;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  const startX = (canvas.width - columns * charWidth) / 2;
+  const startY = (canvas.height - rows * renderConfig.lineHeight) / 2;
+
   // Text settings
   ctx.font = `${renderConfig.fontSize}px ${renderConfig.fontFamily}`;
   ctx.fillStyle = renderConfig.foreground;
@@ -46,8 +46,13 @@ export async function renderAscii({
   // Draw ASCII
   let y = renderConfig.paddingY;
 
+  // Glow in ascii characters
+  
+  // ctx.shadowColor = "#66ccff";
+  // ctx.shadowBlur = 12;
+
   for (const line of lines) {
-    ctx.fillText(line, renderConfig.paddingX, y);
+    ctx.fillText(line, startX, y);
     y += renderConfig.lineHeight;
   }
 

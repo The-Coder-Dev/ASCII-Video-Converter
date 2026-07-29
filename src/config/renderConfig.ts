@@ -1,6 +1,6 @@
 export const renderConfig = {
-  fontSize: 12,
-  lineHeight: 14,
+  fontSize: 18,
+  lineHeight: 18,
 
   paddingX: 30,
   paddingY: 30,
